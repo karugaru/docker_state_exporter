@@ -132,8 +132,9 @@ func (c *dockerHealthCollector) collectMetrics(ch chan<- prometheus.Metric) {
 		ch <- prometheus.MustNewConstMetric(restartcountDesc.Desc(labels), prometheus.GaugeValue, float64(info.RestartCount))
 	}
 }
+
 func (c *dockerHealthCollector) collectContainer() {
-	containers, err := c.containerClient.ContainerList(context.Background(), types.ContainerListOptions{})
+	containers, err := c.containerClient.ContainerList(context.Background(), types.ContainerListOptions{All: true})
 	errCheck(err)
 	c.containerInfoCache = []types.ContainerJSON{}
 
